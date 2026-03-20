@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Papelería Piso 12</title>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
@@ -21,7 +22,7 @@ body.world-admin{background:#0D0D0F;color:#E8E8E0;font-family:'IBM Plex Sans',sa
 .emp-nav-right{display:flex;gap:8px;align-items:center;}
 .emp-link{font-size:.8rem;font-weight:500;color:#6B7280;cursor:pointer;padding:6px 14px;border-radius:8px;border:none;background:none;font-family:'Sora',sans-serif;transition:all .15s;}
 .emp-link:hover{background:#F3F4F6;color:#1C1C1E;}
-.emp-btn-admin{font-size:.78rem;font-weight:600;color:#fff;background:#1C1C1E;border:none;padding:7px 16px;border-radius:8px;cursor:pointer;font-family:'Sora',sans-serif;transition:all .15s;letter-spacing:-.01em;}
+.emp-btn-admin{font-size:.78rem;font-weight:600;color:#fff;background:#1C1C1E;border:none;padding:7px 16px;border-radius:8px;cursor:pointer;font-family:'Sora',sans-serif;transition:all .15s;}
 .emp-btn-admin:hover{background:#374151;}
 
 /* ── HERO ── */
@@ -32,14 +33,14 @@ body.world-admin{background:#0D0D0F;color:#E8E8E0;font-family:'IBM Plex Sans',sa
 .hero h1 .blue{color:#2563EB;}
 .hero p{font-size:1rem;color:#6B7280;line-height:1.65;max-width:480px;margin:0 auto 40px;font-weight:400;}
 .hero-cta{display:inline-flex;align-items:center;gap:8px;background:#2563EB;color:white;font-family:'Sora',sans-serif;font-size:.9rem;font-weight:600;padding:14px 28px;border-radius:12px;border:none;cursor:pointer;transition:all .2s;letter-spacing:-.01em;box-shadow:0 4px 14px rgba(37,99,235,.35);}
-.hero-cta:hover{background:#1D4ED8;transform:translateY(-2px);box-shadow:0 8px 20px rgba(37,99,235,.4);}
+.hero-cta:hover{background:#1D4ED8;transform:translateY(-2px);}
 .features{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:780px;margin:60px auto 0;padding:0 24px 80px;}
 .feat{background:#fff;border:1px solid #EBEBEB;border-radius:14px;padding:22px 20px;}
 .feat-icon{font-size:1.6rem;margin-bottom:10px;}
-.feat h3{font-size:.85rem;font-weight:700;color:#1C1C1E;margin-bottom:4px;letter-spacing:-.01em;}
+.feat h3{font-size:.85rem;font-weight:700;color:#1C1C1E;margin-bottom:4px;}
 .feat p{font-size:.78rem;color:#9CA3AF;line-height:1.5;}
 
-/* ── FORM LAYOUT ── */
+/* ── FORM ── */
 #page-form{background:#FAFAF7;}
 .form-layout{flex:1;display:grid;grid-template-columns:300px 1fr;min-height:calc(100vh - 60px);}
 .form-sidebar{background:#fff;border-right:1px solid #EBEBEB;padding:28px 22px;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto;display:flex;flex-direction:column;gap:20px;}
@@ -53,11 +54,12 @@ body.world-admin{background:#0D0D0F;color:#E8E8E0;font-family:'IBM Plex Sans',sa
 .counter-box{background:#EFF6FF;border-radius:12px;padding:16px;text-align:center;}
 .counter-box .num{font-size:2.5rem;font-weight:800;color:#2563EB;line-height:1;letter-spacing:-.04em;}
 .counter-box .lbl{font-size:.7rem;color:#93C5FD;font-weight:600;margin-top:4px;text-transform:uppercase;letter-spacing:.06em;}
-.btn-submit{width:100%;background:#2563EB;color:white;border:none;padding:13px;border-radius:10px;font-family:'Sora',sans-serif;font-size:.9rem;font-weight:600;cursor:pointer;transition:all .2s;letter-spacing:-.01em;margin-top:auto;}
+.btn-submit{width:100%;background:#2563EB;color:white;border:none;padding:13px;border-radius:10px;font-family:'Sora',sans-serif;font-size:.9rem;font-weight:600;cursor:pointer;transition:all .2s;margin-top:auto;}
 .btn-submit:hover{background:#1D4ED8;transform:translateY(-1px);}
+.btn-submit:disabled{background:#93C5FD;cursor:not-allowed;transform:none;}
 .btn-back{width:100%;background:transparent;color:#6B7280;border:1.5px solid #E5E7EB;padding:10px;border-radius:10px;font-family:'Sora',sans-serif;font-size:.82rem;font-weight:500;cursor:pointer;transition:all .15s;margin-top:6px;}
 .btn-back:hover{border-color:#9CA3AF;color:#374151;}
-.form-products{padding:28px 28px;overflow-y:auto;}
+.form-products{padding:28px;overflow-y:auto;}
 .cat-header{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#9CA3AF;padding:20px 0 10px;border-bottom:1px solid #F3F4F6;margin-bottom:12px;}
 .cat-header:first-child{padding-top:0;}
 .products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:8px;margin-bottom:4px;}
@@ -85,26 +87,26 @@ body.world-admin{background:#0D0D0F;color:#E8E8E0;font-family:'IBM Plex Sans',sa
 .btn-home{background:#0A0A0B;color:white;border:none;padding:13px 28px;border-radius:10px;font-family:'Sora',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer;transition:all .15s;}
 .btn-home:hover{background:#374151;}
 
-/* ═══════════════════════════════════════════════
-   ADMIN — dark dashboard completamente distinto
-═══════════════════════════════════════════════ */
+/* ══ ADMIN — dark dashboard ══ */
 #page-admin{background:#0D0D0F;flex-direction:row;}
-
 .admin-sidebar{width:210px;background:#111113;border-right:1px solid #1E1E22;display:flex;flex-direction:column;padding:20px 14px;position:sticky;top:0;height:100vh;flex-shrink:0;}
 .admin-brand{display:flex;align-items:center;gap:10px;padding:0 6px 24px;border-bottom:1px solid #1E1E22;margin-bottom:20px;}
 .admin-brand-icon{width:32px;height:32px;background:linear-gradient(135deg,#6366F1,#8B5CF6);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;}
 .admin-brand-text{font-family:'IBM Plex Mono',monospace;font-size:.76rem;font-weight:600;color:#E8E8E0;line-height:1.3;}
 .admin-brand-text span{display:block;color:#374151;font-size:.62rem;font-weight:400;}
 .admin-nav-item{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:8px;font-size:.78rem;font-weight:500;color:#4B5563;cursor:pointer;transition:all .15s;margin-bottom:2px;border:none;background:none;font-family:'IBM Plex Sans',sans-serif;width:100%;text-align:left;}
-.admin-nav-item:hover,.admin-nav-item.on{background:#1A1A1E;color:#A78BFA;}
+.admin-nav-item.on{background:#1A1A1E;color:#A78BFA;}
 .nav-dot{width:6px;height:6px;border-radius:50%;background:#6366F1;flex-shrink:0;}
+
+/* realtime indicator */
+.rt-dot{width:7px;height:7px;border-radius:50%;background:#4ADE80;margin-left:auto;flex-shrink:0;box-shadow:0 0 0 0 rgba(74,222,128,.4);animation:pulse-rt 2s infinite;}
+@keyframes pulse-rt{0%{box-shadow:0 0 0 0 rgba(74,222,128,.4)}70%{box-shadow:0 0 0 6px rgba(74,222,128,0)}100%{box-shadow:0 0 0 0 rgba(74,222,128,0)}}
+.rt-dot.off{background:#4B5563;animation:none;box-shadow:none;}
+
 .admin-sidebar-bottom{margin-top:auto;border-top:1px solid #1E1E22;padding-top:14px;}
 .btn-exit{width:100%;background:#1A1A1E;color:#4B5563;border:none;padding:9px 11px;border-radius:8px;font-family:'IBM Plex Sans',sans-serif;font-size:.77rem;cursor:pointer;text-align:left;transition:all .15s;display:flex;align-items:center;gap:8px;}
 .btn-exit:hover{color:#9CA3AF;}
-
 .admin-main{flex:1;overflow-y:auto;}
-
-/* topbar */
 .admin-topbar{padding:18px 28px 14px;border-bottom:1px solid #1E1E22;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;position:sticky;top:0;background:#0D0D0F;z-index:10;}
 .admin-topbar h1{font-family:'IBM Plex Mono',monospace;font-size:1rem;font-weight:600;color:#E8E8E0;letter-spacing:-.02em;}
 .admin-topbar p{font-size:.73rem;color:#374151;margin-top:2px;font-family:'IBM Plex Sans',sans-serif;}
@@ -115,14 +117,12 @@ body.world-admin{background:#0D0D0F;color:#E8E8E0;font-family:'IBM Plex Sans',sa
 .adm-btn-danger{background:#2D0A0A;border-color:#5C1414;color:#F87171;}
 .adm-btn-danger:hover{background:#3D0E0E;}
 
-/* stats row */
 .admin-stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#1E1E22;border-bottom:1px solid #1E1E22;}
 .admin-stat{background:#111113;padding:18px 22px;}
 .admin-stat-label{font-family:'IBM Plex Mono',monospace;font-size:.6rem;font-weight:500;text-transform:uppercase;letter-spacing:.12em;color:#374151;margin-bottom:6px;}
-.admin-stat-val{font-family:'IBM Plex Mono',monospace;font-size:1.9rem;font-weight:600;color:#E8E8E0;line-height:1;letter-spacing:-.03em;}
+.admin-stat-val{font-family:'IBM Plex Mono',monospace;font-size:1.9rem;font-weight:600;color:#E8E8E0;line-height:1;letter-spacing:-.03em;transition:color .3s;}
 .admin-stat.hi .admin-stat-val{color:#A78BFA;}
 
-/* filters */
 .admin-filters{padding:12px 28px;border-bottom:1px solid #1E1E22;display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:#0D0D0F;}
 .admin-filters label{font-family:'IBM Plex Mono',monospace;font-size:.62rem;color:#374151;text-transform:uppercase;letter-spacing:.1em;}
 .admin-filters select,.admin-filters input{padding:6px 11px;background:#111113;border:1px solid #2A2A2F;border-radius:6px;color:#9CA3AF;font-family:'IBM Plex Sans',sans-serif;font-size:.8rem;transition:border-color .15s;appearance:none;}
@@ -130,30 +130,27 @@ body.world-admin{background:#0D0D0F;color:#E8E8E0;font-family:'IBM Plex Sans',sa
 .admin-filters input{min-width:175px;}
 .fdiv{width:1px;height:18px;background:#2A2A2F;}
 
-/* content */
 .admin-content{padding:22px 28px;display:flex;flex-direction:column;gap:18px;}
 .admin-row2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
-
-/* panels */
 .apanel{background:#111113;border:1px solid #1E1E22;border-radius:12px;overflow:hidden;}
 .apanel-header{padding:13px 18px;border-bottom:1px solid #1E1E22;display:flex;align-items:center;justify-content:space-between;}
 .apanel-title{font-family:'IBM Plex Mono',monospace;font-size:.7rem;font-weight:600;color:#6B7280;text-transform:uppercase;letter-spacing:.09em;display:flex;align-items:center;gap:8px;}
 .apanel-title .dot{width:5px;height:5px;border-radius:50%;background:#6366F1;}
 .apanel-count{font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:#374151;background:#1A1A1E;padding:2px 8px;border-radius:4px;}
 
-/* tables */
+/* Loading spinner */
+.loading-row{padding:32px;text-align:center;color:#374151;font-family:'IBM Plex Mono',monospace;font-size:.75rem;display:flex;align-items:center;justify-content:center;gap:10px;}
+.spinner{width:16px;height:16px;border:2px solid #2A2A2F;border-top-color:#6366F1;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
 .atable{width:100%;border-collapse:collapse;}
 .atable th{padding:9px 16px;background:#0F0F11;text-align:left;font-family:'IBM Plex Mono',monospace;font-size:.6rem;font-weight:500;color:#374151;text-transform:uppercase;letter-spacing:.1em;border-bottom:1px solid #1E1E22;white-space:nowrap;}
 .atable td{padding:10px 16px;border-bottom:1px solid #161618;font-size:.81rem;color:#6B7280;vertical-align:middle;}
 .atable tr:last-child td{border-bottom:none;}
 .atable tr:hover td{background:#151518;color:#9CA3AF;}
 .atable td strong{color:#E8E8E0;font-weight:600;}
-
-/* avatar */
 .avt{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,#4F46E5,#7C3AED);color:#E8E8E0;font-size:.58rem;font-weight:700;font-family:'IBM Plex Mono',monospace;flex-shrink:0;margin-right:8px;}
 .avt-cell{display:flex;align-items:center;}
-
-/* bars */
 .bar-row{display:flex;align-items:center;gap:10px;padding:8px 16px;border-bottom:1px solid #161618;transition:background .12s;}
 .bar-row:last-child{border-bottom:none;}
 .bar-row:hover{background:#151518;}
@@ -162,11 +159,15 @@ body.world-admin{background:#0D0D0F;color:#E8E8E0;font-family:'IBM Plex Sans',sa
 .bar-track{flex:0 0 80px;background:#1A1A1E;border-radius:3px;height:5px;overflow:hidden;}
 .bar-fill{height:100%;border-radius:3px;transition:width .6s cubic-bezier(.4,0,.2,1);}
 .bar-qty{font-family:'IBM Plex Mono',monospace;font-size:.7rem;font-weight:600;color:#6366F1;width:22px;text-align:right;flex-shrink:0;}
-
-/* tags */
 .tag{display:inline-block;background:#1A1A1E;color:#4B5563;border:1px solid #2A2A2F;border-radius:4px;padding:2px 6px;font-size:.68rem;font-family:'IBM Plex Mono',monospace;margin:1px;}
 .abadge-ok{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.66rem;font-weight:600;font-family:'IBM Plex Mono',monospace;background:#0A2E1A;color:#4ADE80;border:1px solid #14532D;}
 .empty-adm{padding:36px 20px;text-align:center;color:#374151;font-family:'IBM Plex Mono',monospace;font-size:.78rem;}
+
+/* Toast notification */
+.toast{position:fixed;bottom:24px;right:24px;background:#111113;border:1px solid #2A2A2F;border-radius:10px;padding:12px 18px;font-family:'IBM Plex Mono',monospace;font-size:.75rem;color:#E8E8E0;z-index:9999;display:flex;align-items:center;gap:10px;transform:translateY(80px);opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none;}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast.green{border-color:#14532D;color:#4ADE80;}
+.toast.red{border-color:#5C1414;color:#F87171;}
 
 /* ── PASSWORD MODAL ── */
 .pwd-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(10px);z-index:999;align-items:center;justify-content:center;}
@@ -203,6 +204,9 @@ body.world-admin{background:#0D0D0F;color:#E8E8E0;font-family:'IBM Plex Sans',sa
 </head>
 <body class="world-employee">
 
+<!-- TOAST -->
+<div id="toast" class="toast"></div>
+
 <!-- PASSWORD MODAL -->
 <div id="pwd-overlay" class="pwd-overlay">
   <div class="pwd-box">
@@ -225,10 +229,7 @@ body.world-admin{background:#0D0D0F;color:#E8E8E0;font-family:'IBM Plex Sans',sa
 <!-- ══ HOME ══ -->
 <div id="page-home" class="page active">
   <nav class="emp-nav">
-    <div class="emp-logo">
-      <div class="emp-logo-dot">📋</div>
-      Papelería · Piso 12
-    </div>
+    <div class="emp-logo"><div class="emp-logo-dot">📋</div>Papelería · Piso 12</div>
     <div class="emp-nav-right">
       <button class="emp-link" onclick="go('form')">Hacer pedido</button>
       <button class="emp-btn-admin" onclick="reqAdmin()">Panel Admin →</button>
@@ -238,7 +239,7 @@ body.world-admin{background:#0D0D0F;color:#E8E8E0;font-family:'IBM Plex Sans',sa
     <div class="hero">
       <div class="hero-eyebrow">✦ Sistema de pedidos interno</div>
       <h1>Pide tu papelería<br>en <span class="blue">segundos.</span></h1>
-      <p>Sin formularios en papel, sin esperas. Selecciona lo que necesitas, envía tu pedido y el área de logística lo recibe al instante.</p>
+      <p>Sin formularios en papel, sin esperas. Selecciona lo que necesitas y el área de logística lo recibe al instante.</p>
       <button class="hero-cta" onclick="go('form')">
         Hacer mi pedido
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -246,8 +247,8 @@ body.world-admin{background:#0D0D0F;color:#E8E8E0;font-family:'IBM Plex Sans',sa
     </div>
     <div class="features">
       <div class="feat"><div class="feat-icon">⚡</div><h3>Rápido y sin papel</h3><p>Completa tu pedido en menos de 2 minutos desde cualquier dispositivo.</p></div>
-      <div class="feat"><div class="feat-icon">📦</div><h3>60+ artículos</h3><p>Todo el catálogo organizado por categorías, con control de cantidades.</p></div>
-      <div class="feat"><div class="feat-icon">✅</div><h3>Registro inmediato</h3><p>Tu pedido queda guardado al instante con número de seguimiento.</p></div>
+      <div class="feat"><div class="feat-icon">☁️</div><h3>Guardado en la nube</h3><p>Tus pedidos quedan registrados en tiempo real en la base de datos.</p></div>
+      <div class="feat"><div class="feat-icon">✅</div><h3>Trazabilidad total</h3><p>Historial completo por persona, artículo y periodo.</p></div>
     </div>
   </div>
 </div>
@@ -255,13 +256,8 @@ body.world-admin{background:#0D0D0F;color:#E8E8E0;font-family:'IBM Plex Sans',sa
 <!-- ══ FORM ══ -->
 <div id="page-form" class="page">
   <nav class="emp-nav">
-    <div class="emp-logo">
-      <div class="emp-logo-dot">📋</div>
-      Papelería · Piso 12
-    </div>
-    <div class="emp-nav-right">
-      <button class="emp-link" onclick="go('home')">← Volver</button>
-    </div>
+    <div class="emp-logo"><div class="emp-logo-dot">📋</div>Papelería · Piso 12</div>
+    <div class="emp-nav-right"><button class="emp-link" onclick="go('home')">← Volver</button></div>
   </nav>
   <div class="form-layout">
     <aside class="form-sidebar">
@@ -286,7 +282,7 @@ body.world-admin{background:#0D0D0F;color:#E8E8E0;font-family:'IBM Plex Sans',sa
         <div class="num" id="cnt-sel">0</div>
         <div class="lbl">artículos seleccionados</div>
       </div>
-      <button class="btn-submit" onclick="submitOrder()">Enviar pedido →</button>
+      <button class="btn-submit" id="btn-submit" onclick="submitOrder()">Enviar pedido →</button>
       <button class="btn-back" onclick="go('home')">Cancelar</button>
     </aside>
     <div class="form-products" id="products-area"></div>
@@ -314,7 +310,10 @@ body.world-admin{background:#0D0D0F;color:#E8E8E0;font-family:'IBM Plex Sans',sa
       <div class="admin-brand-icon">⚙</div>
       <div class="admin-brand-text">Admin Panel<span>Piso 12</span></div>
     </div>
-    <button class="admin-nav-item on"><span class="nav-dot"></span>Dashboard</button>
+    <button class="admin-nav-item on">
+      <span class="nav-dot"></span>Dashboard
+      <span class="rt-dot" id="rt-dot" title="Tiempo real"></span>
+    </button>
     <div class="admin-sidebar-bottom">
       <button class="btn-exit" onclick="go('home')">← Salir al portal</button>
     </div>
@@ -324,7 +323,7 @@ body.world-admin{background:#0D0D0F;color:#E8E8E0;font-family:'IBM Plex Sans',sa
     <div class="admin-topbar">
       <div>
         <h1>Dashboard · Papelería</h1>
-        <p>Piso 12 — pedidos en tiempo real</p>
+        <p id="adm-ts">Piso 12 — conectando...</p>
       </div>
       <div class="admin-actions">
         <button class="adm-btn adm-btn-ghost" onclick="exportCSV()">⬇ Exportar CSV</button>
@@ -333,26 +332,26 @@ body.world-admin{background:#0D0D0F;color:#E8E8E0;font-family:'IBM Plex Sans',sa
     </div>
 
     <div class="admin-stats-row">
-      <div class="admin-stat hi"><div class="admin-stat-label">Total pedidos</div><div class="admin-stat-val" id="st0">0</div></div>
-      <div class="admin-stat"><div class="admin-stat-label">Personas</div><div class="admin-stat-val" id="st1">0</div></div>
-      <div class="admin-stat"><div class="admin-stat-label">Unidades</div><div class="admin-stat-val" id="st2">0</div></div>
-      <div class="admin-stat"><div class="admin-stat-label">Artículos distintos</div><div class="admin-stat-val" id="st3">0</div></div>
+      <div class="admin-stat hi"><div class="admin-stat-label">Total pedidos</div><div class="admin-stat-val" id="st0">—</div></div>
+      <div class="admin-stat"><div class="admin-stat-label">Personas</div><div class="admin-stat-val" id="st1">—</div></div>
+      <div class="admin-stat"><div class="admin-stat-label">Unidades</div><div class="admin-stat-val" id="st2">—</div></div>
+      <div class="admin-stat"><div class="admin-stat-label">Artículos distintos</div><div class="admin-stat-val" id="st3">—</div></div>
     </div>
 
     <div class="admin-filters">
       <label>Mes</label>
-      <select id="f-mes" onchange="renderAdmin()">
+      <select id="f-mes" onchange="applyFilters()">
         <option value="">Todos</option>
         <option value="01">Enero</option><option value="02">Febrero</option><option value="03">Marzo</option><option value="04">Abril</option><option value="05">Mayo</option><option value="06">Junio</option><option value="07">Julio</option><option value="08">Agosto</option><option value="09">Septiembre</option><option value="10">Octubre</option><option value="11">Noviembre</option><option value="12">Diciembre</option>
       </select>
       <div class="fdiv"></div>
       <label>Año</label>
-      <select id="f-anio" onchange="renderAdmin()">
+      <select id="f-anio" onchange="applyFilters()">
         <option value="">Todos</option><option value="2025">2025</option><option value="2026">2026</option>
       </select>
       <div class="fdiv"></div>
       <label>Buscar</label>
-      <input type="text" id="f-search" placeholder="Persona o artículo…" oninput="renderAdmin()">
+      <input type="text" id="f-search" placeholder="Persona o artículo…" oninput="applyFilters()">
     </div>
 
     <div class="admin-content">
@@ -362,57 +361,73 @@ body.world-admin{background:#0D0D0F;color:#E8E8E0;font-family:'IBM Plex Sans',sa
             <div class="apanel-title"><span class="dot"></span>Por persona</div>
             <span class="apanel-count" id="cp-p">0</span>
           </div>
-          <div id="pan-personas"></div>
+          <div id="pan-personas"><div class="loading-row"><div class="spinner"></div>Cargando…</div></div>
         </div>
         <div class="apanel">
           <div class="apanel-header">
             <div class="apanel-title"><span class="dot"></span>Top artículos</div>
             <span class="apanel-count" id="cp-a">0</span>
           </div>
-          <div id="pan-articulos"></div>
+          <div id="pan-articulos"><div class="loading-row"><div class="spinner"></div>Cargando…</div></div>
         </div>
       </div>
       <div class="apanel">
         <div class="apanel-header">
           <div class="apanel-title"><span class="dot"></span>Registro completo</div>
-          <span class="apanel-count" id="cp-r">0</span>
+          <span class="apanel-count" id="cp-r">0 registros</span>
         </div>
-        <div style="overflow-x:auto" id="pan-registros"></div>
+        <div style="overflow-x:auto" id="pan-registros"><div class="loading-row"><div class="spinner"></div>Cargando…</div></div>
       </div>
     </div>
   </main>
 </div>
 
 <script>
+// ══════════════════════════════════════════════
+//  SUPABASE CONFIG
+// ══════════════════════════════════════════════
+const SUPABASE_URL = 'https://divicobbjgiopsydxsar.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_oZhoYj9TmSzd92Yvh5qH_g_K8bCvBxO';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ══════════════════════════════════════════════
+//  DATOS
+// ══════════════════════════════════════════════
 const USERS=["RECEPCION","JORGE SANDOVAL","ASTRID ANDRADE","CESAR LOZANO","BIBIANA ZARATE","KATHERINE","MILENA BONILLA","CARLOS GARCIA","TATIANA L","MARIA REYES","JENNY","ALEJANDRA G.","ADRIANA","NATALY RIOS","BRANDON P.","ALEXANDRA","SANDRA V.","LUISA R.","ALEJANDRA R.","LIZETH RENDON","JULIAN BUSTOS","JUAN DAVID","NANCY PALACIO","ALESDY","ELIZABETH","CESAR","SUSAN","DEIVIS CERQUERA","NORA","ANDREA ARAQUE","JHON MORALES","JOSE MONCADA","RICARDO","JEFFERSON","ALVARO","MARLY","PAMELA","GUILLERMO","FRANK","MARIA JOSE","JUNIOR","CARLOS H.","JUAN SEBASTIAN","LAURA"];
 const CATS={"Escritura & Corrección":["BOLIGRAFO NEGRO SEMI GEL","LAPIZ NEGRO N°2 NORMA","LAPIZ ROJO","MICROPUNTA","KILOMETRICO DE COLORES","PORTA MINA 0.7","MINA 0.7","MINA 2 MM","CORRECTOR DE CINTA","CORRECTOR DE LAPIZ FABER CARTELL"],"Organización & Archivo":["ARCHIVADOR AZ CARTA","ARCHIVADOR AZ OFICIO","CARPETA COLGANTE OFICIO","SEPARADOR PLASTICO X5","SEPARADORES ADHESIVOS DE COLORES","TABLA LEGAJADORA ACRILICA OFICIO","SOBRE DE MANILA CARTA","SOBRE DE MANILA OFICIO"],"Adhesivos & Clips":["CLIP JUMBO","CLIP MARIPOSA X50","CLIP SENCILLO X100","GANCHO LOTERO GRANDE X 12","GRAPA ESTANDAR GALVANIZADA","COSEDORA","SACAGANCHOS","PERFORADORA","CHINCHE","REFUERZOS AUTOADHESIVOS","BANDAS ELASTICAS"],"Cintas & Pegantes":["CINTA TRANSPARENTE ANCHA","CINTA TRANSPARENTE DELGADA","CINTA ENMASCARAR ANCHA","CINTA ENMASCARAR DELGADA","CINTA MAGICA","PEGANTE EN BARRA DE 40GR FABER CASTEL"],"Marcadores & Resaltadores":["MARCADOR BORRABLE DE COLORES","MARCADOR PERMANENTE DE COLORES","MARCADORES SHARPIE REDONDO","RESALTADOR DE COLORES","ORGANIZADOR DE MARCADORES","BORRADOR PARA TABLERO","TABLERO"],"Papelería General":["RESMAS BOND CARTA","RESMAS BOND OFICIO","CUADERNO","POST-IT ADHESIVOS DE COLORES","CARTULINA DE COLORES 1/8 X10","BOLSA CATALOGO CARTA DELGADA PQT X 100","BOLSA CATALOGO CARTA GRUESO PQT X 25"],"Herramientas & Otros":["ALMOHADILLA PARA SELLOS","TINTA SELLO","HUELLERO","CALCULADORA MX125","BISTURY PLASTICO","CUCHILLAS BISTURIN X 10","TAJA LAPIZ SENCILLO DEPOSITO","TIJERA OFICINA","BORRADOR NATA","REGLA METALICA 30CM","CUENTA FACIL"]};
 const MESES={"01":"Enero","02":"Febrero","03":"Marzo","04":"Abril","05":"Mayo","06":"Junio","07":"Julio","08":"Agosto","09":"Septiembre","10":"Octubre","11":"Noviembre","12":"Diciembre"};
 const PASS='torreon123**';
 
-const getOrders=()=>{try{return JSON.parse(localStorage.getItem('pp12')||'[]');}catch{return[];}};
-const save=o=>localStorage.setItem('pp12',JSON.stringify(o));
+// ══════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════
+let allOrders = [];  // cache local de la BD
+let realtimeSub = null;
 
-window.onload=()=>{
-  const s=document.getElementById('sel-user');
-  USERS.forEach(u=>{const o=document.createElement('option');o.value=u;o.textContent=u;s.appendChild(o);});
-  const n=new Date();
-  document.getElementById('sel-mes').value=String(n.getMonth()+1).padStart(2,'0');
-  document.getElementById('inp-anio').value=n.getFullYear();
+window.onload = () => {
+  const s = document.getElementById('sel-user');
+  USERS.forEach(u => { const o = document.createElement('option'); o.value=u; o.textContent=u; s.appendChild(o); });
+  const n = new Date();
+  document.getElementById('sel-mes').value = String(n.getMonth()+1).padStart(2,'0');
+  document.getElementById('inp-anio').value = n.getFullYear();
   buildProducts();
 };
 
-function buildProducts(){
-  const area=document.getElementById('products-area');
-  area.innerHTML='';
-  Object.entries(CATS).forEach(([cat,items])=>{
-    const h=document.createElement('div');h.className='cat-header';h.textContent=cat;area.appendChild(h);
-    const g=document.createElement('div');g.className='products-grid';
-    items.forEach(item=>{
-      const k=item.replace(/\s+/g,'_');
-      const c=document.createElement('div');
-      c.className='pcard';c.dataset.p=item;
+// ══════════════════════════════════════════════
+//  PRODUCTOS
+// ══════════════════════════════════════════════
+function buildProducts() {
+  const area = document.getElementById('products-area');
+  area.innerHTML = '';
+  Object.entries(CATS).forEach(([cat, items]) => {
+    const h = document.createElement('div'); h.className='cat-header'; h.textContent=cat; area.appendChild(h);
+    const g = document.createElement('div'); g.className='products-grid';
+    items.forEach(item => {
+      const k = item.replace(/\s+/g,'_');
+      const c = document.createElement('div');
+      c.className='pcard'; c.dataset.p=item;
       c.innerHTML=`<div class="pcheck">✓</div><span class="pname">${item}</span><div class="qty-ctrl"><button class="qbtn" onclick="cq(event,'${k}',-1)">−</button><span class="qnum" id="q_${k}">1</span><button class="qbtn" onclick="cq(event,'${k}',1)">+</button></div>`;
-      c.addEventListener('click',e=>{if(e.target.classList.contains('qbtn'))return;c.classList.toggle('on');uCnt();});
+      c.addEventListener('click', e => { if(e.target.classList.contains('qbtn')) return; c.classList.toggle('on'); uCnt(); });
       g.appendChild(c);
     });
     area.appendChild(g);
@@ -421,88 +436,221 @@ function buildProducts(){
 function cq(e,k,d){e.stopPropagation();const el=document.getElementById('q_'+k);if(!el)return;let v=parseInt(el.textContent)+d;if(v<1)v=1;el.textContent=v;}
 function uCnt(){document.getElementById('cnt-sel').textContent=document.querySelectorAll('.pcard.on').length;}
 
-function submitOrder(){
-  const user=document.getElementById('sel-user').value;
-  const mes=document.getElementById('sel-mes').value;
-  const anio=document.getElementById('inp-anio').value;
-  if(!user){alert('Por favor selecciona tu nombre.');return;}
-  const sel=document.querySelectorAll('.pcard.on');
-  if(!sel.length){alert('Selecciona al menos un artículo.');return;}
-  const items=[];
-  sel.forEach(c=>{const k=c.dataset.p.replace(/\s+/g,'_');const qEl=document.getElementById('q_'+k);items.push({product:c.dataset.p,qty:qEl?parseInt(qEl.textContent):1});});
-  const id='PD-'+Date.now().toString(36).toUpperCase();
-  const orders=getOrders();
-  orders.push({id,user,mes,anio:parseInt(anio),items,fecha:new Date().toLocaleDateString('es-CO'),hora:new Date().toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'})});
-  save(orders);
-  document.getElementById('suc-msg').textContent=`${user} — ${MESES[mes]} ${anio} — ${items.length} artículos registrados.`;
-  document.getElementById('suc-id').textContent='ID: '+id;
-  go('success');buildProducts();uCnt();
+// ══════════════════════════════════════════════
+//  ENVIAR PEDIDO → SUPABASE
+// ══════════════════════════════════════════════
+async function submitOrder() {
+  const user = document.getElementById('sel-user').value;
+  const mes  = document.getElementById('sel-mes').value;
+  const anio = parseInt(document.getElementById('inp-anio').value);
+  if(!user) { showToast('⚠ Selecciona tu nombre','red'); return; }
+  const sel = document.querySelectorAll('.pcard.on');
+  if(!sel.length) { showToast('⚠ Selecciona al menos un artículo','red'); return; }
+
+  const items = [];
+  sel.forEach(c => {
+    const k = c.dataset.p.replace(/\s+/g,'_');
+    const qEl = document.getElementById('q_'+k);
+    items.push({ product: c.dataset.p, qty: qEl ? parseInt(qEl.textContent) : 1 });
+  });
+
+  const id = 'PD-' + Date.now().toString(36).toUpperCase();
+  const now = new Date();
+  const fecha = now.toLocaleDateString('es-CO');
+  const hora  = now.toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'});
+
+  const btn = document.getElementById('btn-submit');
+  btn.disabled = true;
+  btn.textContent = 'Enviando…';
+
+  const { error } = await sb.from('pedidos').insert({
+    id, usuario: user, mes, anio, fecha, hora, items
+  });
+
+  btn.disabled = false;
+  btn.textContent = 'Enviar pedido →';
+
+  if(error) {
+    console.error(error);
+    showToast('❌ Error al guardar: ' + error.message, 'red');
+    return;
+  }
+
+  document.getElementById('suc-msg').textContent = `${user} — ${MESES[mes]} ${anio} — ${items.length} artículos registrados.`;
+  document.getElementById('suc-id').textContent = 'ID: ' + id;
+  go('success');
+  buildProducts();
+  uCnt();
 }
 
-function getF(){
-  let o=getOrders();
-  const m=document.getElementById('f-mes')?.value,a=document.getElementById('f-anio')?.value,s=(document.getElementById('f-search')?.value||'').toLowerCase();
-  if(m)o=o.filter(x=>x.mes===m);
-  if(a)o=o.filter(x=>String(x.anio)===a);
-  if(s)o=o.filter(x=>x.user.toLowerCase().includes(s)||x.items.some(i=>i.product.toLowerCase().includes(s)));
+// ══════════════════════════════════════════════
+//  ADMIN — CARGA + REALTIME
+// ══════════════════════════════════════════════
+async function loadOrders() {
+  const { data, error } = await sb
+    .from('pedidos')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if(error) {
+    console.error(error);
+    document.getElementById('adm-ts').textContent = '⚠ Error de conexión';
+    document.getElementById('rt-dot').classList.add('off');
+    return;
+  }
+
+  allOrders = data || [];
+  const ts = new Date().toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  document.getElementById('adm-ts').textContent = `Última actualización: ${ts}`;
+  renderAdmin();
+}
+
+function subscribeRealtime() {
+  if(realtimeSub) realtimeSub.unsubscribe();
+
+  realtimeSub = sb
+    .channel('pedidos-changes')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'pedidos' },
+      payload => {
+        if(payload.eventType === 'INSERT') {
+          allOrders.unshift(payload.new);
+          showToast(`📦 Nuevo pedido de ${payload.new.usuario}`, 'green');
+        } else if(payload.eventType === 'DELETE') {
+          allOrders = allOrders.filter(o => o.id !== payload.old.id);
+        }
+        const ts = new Date().toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+        document.getElementById('adm-ts').textContent = `Actualizado en tiempo real: ${ts}`;
+        renderAdmin();
+      }
+    )
+    .subscribe(status => {
+      const dot = document.getElementById('rt-dot');
+      if(status === 'SUBSCRIBED') { dot.classList.remove('off'); }
+      else { dot.classList.add('off'); }
+    });
+}
+
+function applyFilters() { renderAdmin(); }
+
+function getFiltered() {
+  let o = [...allOrders];
+  const m = document.getElementById('f-mes')?.value;
+  const a = document.getElementById('f-anio')?.value;
+  const s = (document.getElementById('f-search')?.value||'').toLowerCase();
+  if(m) o = o.filter(x=>x.mes===m);
+  if(a) o = o.filter(x=>String(x.anio)===a);
+  if(s) o = o.filter(x=>x.usuario.toLowerCase().includes(s)||x.items.some(i=>i.product.toLowerCase().includes(s)));
   return o;
 }
+
 function ini(n){return n.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase();}
 
-function renderAdmin(){
-  const orders=getF();
-  const pm={};orders.forEach(o=>o.items.forEach(i=>{pm[i.product]=(pm[i.product]||0)+i.qty;}));
-  document.getElementById('st0').textContent=orders.length;
-  document.getElementById('st1').textContent=new Set(orders.map(o=>o.user)).size;
-  document.getElementById('st2').textContent=orders.reduce((s,o)=>s+o.items.reduce((ss,i)=>ss+i.qty,0),0);
-  document.getElementById('st3').textContent=Object.keys(pm).length;
+function renderAdmin() {
+  const orders = getFiltered();
+  const pm = {};
+  orders.forEach(o=>o.items.forEach(i=>{pm[i.product]=(pm[i.product]||0)+i.qty;}));
+
+  document.getElementById('st0').textContent = orders.length;
+  document.getElementById('st1').textContent = new Set(orders.map(o=>o.usuario)).size;
+  document.getElementById('st2').textContent = orders.reduce((s,o)=>s+o.items.reduce((ss,i)=>ss+i.qty,0),0);
+  document.getElementById('st3').textContent = Object.keys(pm).length;
 
   // personas
-  const map={};orders.forEach(o=>{if(!map[o.user])map[o.user]={n:0,u:0,d:''};map[o.user].n++;map[o.user].u+=o.items.reduce((s,i)=>s+i.qty,0);map[o.user].d=o.fecha;});
-  const ent=Object.entries(map);
-  document.getElementById('cp-p').textContent=ent.length;
-  document.getElementById('pan-personas').innerHTML=!ent.length?'<div class="empty-adm">— sin registros —</div>':`<table class="atable"><thead><tr><th>Nombre</th><th>Pedidos</th><th>Uds</th><th>Último</th><th>Estado</th></tr></thead><tbody>${ent.map(([u,d])=>`<tr><td><div class="avt-cell"><span class="avt">${ini(u)}</span><strong>${u}</strong></div></td><td>${d.n}</td><td><strong>${d.u}</strong></td><td style="font-family:'IBM Plex Mono',monospace;font-size:.7rem;color:#374151">${d.d}</td><td><span class="abadge-ok">OK</span></td></tr>`).join('')}</tbody></table>`;
+  const map = {};
+  orders.forEach(o=>{if(!map[o.usuario])map[o.usuario]={n:0,u:0,d:''};map[o.usuario].n++;map[o.usuario].u+=o.items.reduce((s,i)=>s+i.qty,0);map[o.usuario].d=o.fecha||'';});
+  const ent = Object.entries(map);
+  document.getElementById('cp-p').textContent = ent.length;
+  document.getElementById('pan-personas').innerHTML = !ent.length
+    ? '<div class="empty-adm">— sin registros —</div>'
+    : `<table class="atable"><thead><tr><th>Nombre</th><th>Pedidos</th><th>Uds</th><th>Último</th><th>Estado</th></tr></thead><tbody>
+      ${ent.map(([u,d])=>`<tr><td><div class="avt-cell"><span class="avt">${ini(u)}</span><strong>${u}</strong></div></td><td>${d.n}</td><td><strong>${d.u}</strong></td><td style="font-family:'IBM Plex Mono',monospace;font-size:.7rem;color:#374151">${d.d}</td><td><span class="abadge-ok">OK</span></td></tr>`).join('')}
+      </tbody></table>`;
 
   // artículos
-  const sorted=Object.entries(pm).sort((a,b)=>b[1]-a[1]);
-  document.getElementById('cp-a').textContent=sorted.length;
+  const sorted = Object.entries(pm).sort((a,b)=>b[1]-a[1]);
+  document.getElementById('cp-a').textContent = sorted.length;
   const COLS=['#F87171','#FB923C','#FBBF24','#4ADE80','#60A5FA','#A78BFA'];
-  const max=sorted[0]?.[1]||1;
-  document.getElementById('pan-articulos').innerHTML=!sorted.length?'<div class="empty-adm">— sin registros —</div>':sorted.slice(0,15).map(([p,q],i)=>`<div class="bar-row"><span class="bar-rank">${i+1}</span><span class="bar-name" title="${p}">${p}</span><div class="bar-track"><div class="bar-fill" style="width:${Math.round(q/max*100)}%;background:${COLS[Math.min(i,COLS.length-1)]}"></div></div><span class="bar-qty">${q}</span></div>`).join('');
+  const max = sorted[0]?.[1]||1;
+  document.getElementById('pan-articulos').innerHTML = !sorted.length
+    ? '<div class="empty-adm">— sin registros —</div>'
+    : sorted.slice(0,15).map(([p,q],i)=>`<div class="bar-row"><span class="bar-rank">${i+1}</span><span class="bar-name" title="${p}">${p}</span><div class="bar-track"><div class="bar-fill" style="width:${Math.round(q/max*100)}%;background:${COLS[Math.min(i,COLS.length-1)]}"></div></div><span class="bar-qty">${q}</span></div>`).join('');
 
   // registros
-  document.getElementById('cp-r').textContent=orders.length+' registros';
-  document.getElementById('pan-registros').innerHTML=!orders.length?'<div class="empty-adm">— sin registros —</div>':`<table class="atable"><thead><tr><th>ID</th><th>Fecha</th><th>Persona</th><th>Periodo</th><th>Artículos</th><th style="text-align:right">Uds</th></tr></thead><tbody>${[...orders].reverse().map(o=>`<tr><td style="font-family:'IBM Plex Mono',monospace;font-size:.66rem;color:#374151">${o.id||'—'}</td><td style="font-family:'IBM Plex Mono',monospace;font-size:.68rem;white-space:nowrap;color:#374151">${o.fecha}<br>${o.hora}</td><td><div class="avt-cell"><span class="avt">${ini(o.user)}</span><strong>${o.user}</strong></div></td><td style="white-space:nowrap;font-size:.78rem">${MESES[o.mes]} ${o.anio}</td><td style="max-width:360px">${o.items.map(i=>`<span class="tag">${i.product} ×${i.qty}</span>`).join('')}</td><td style="text-align:right"><strong>${o.items.reduce((s,i)=>s+i.qty,0)}</strong></td></tr>`).join('')}</tbody></table>`;
+  document.getElementById('cp-r').textContent = orders.length + ' registros';
+  document.getElementById('pan-registros').innerHTML = !orders.length
+    ? '<div class="empty-adm">— sin registros —</div>'
+    : `<table class="atable"><thead><tr><th>ID</th><th>Fecha</th><th>Persona</th><th>Periodo</th><th>Artículos</th><th style="text-align:right">Uds</th></tr></thead><tbody>
+      ${orders.map(o=>`<tr>
+        <td style="font-family:'IBM Plex Mono',monospace;font-size:.66rem;color:#374151">${o.id||'—'}</td>
+        <td style="font-family:'IBM Plex Mono',monospace;font-size:.68rem;white-space:nowrap;color:#374151">${o.fecha||''}<br>${o.hora||''}</td>
+        <td><div class="avt-cell"><span class="avt">${ini(o.usuario)}</span><strong>${o.usuario}</strong></div></td>
+        <td style="white-space:nowrap;font-size:.78rem">${MESES[o.mes]||o.mes} ${o.anio}</td>
+        <td style="max-width:360px">${o.items.map(i=>`<span class="tag">${i.product} ×${i.qty}</span>`).join('')}</td>
+        <td style="text-align:right"><strong>${o.items.reduce((s,i)=>s+i.qty,0)}</strong></td>
+      </tr>`).join('')}
+      </tbody></table>`;
 }
 
-function exportCSV(){
-  const o=getF();if(!o.length){alert('No hay pedidos para exportar.');return;}
+async function exportCSV() {
+  const orders = getFiltered();
+  if(!orders.length){showToast('No hay pedidos para exportar','red');return;}
   const rows=[['ID','Fecha','Hora','Persona','Mes','Año','Artículo','Cantidad']];
-  o.forEach(x=>x.items.forEach(i=>rows.push([x.id||'',x.fecha,x.hora,x.user,MESES[x.mes],x.anio,i.product,i.qty])));
+  orders.forEach(o=>o.items.forEach(i=>rows.push([o.id||'',o.fecha||'',o.hora||'',o.usuario,MESES[o.mes]||o.mes,o.anio,i.product,i.qty])));
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob(['\uFEFF'+rows.map(r=>r.map(v=>`"${v}"`).join(',')).join('\n')],{type:'text/csv;charset=utf-8;'}));
-  a.download='pedidos_p12.csv';a.click();
+  a.download='pedidos_p12.csv'; a.click();
+  showToast('✅ CSV exportado','green');
 }
-function clearAll(){if(confirm('¿Eliminar todos los pedidos? Esta acción no se puede deshacer.')){localStorage.removeItem('pp12');renderAdmin();}}
 
-// NAV
-let adminOk=false;
-function go(page){
+async function clearAll() {
+  if(!confirm('¿Eliminar TODOS los pedidos de la base de datos? Esta acción no se puede deshacer.')) return;
+  const { error } = await sb.from('pedidos').delete().neq('id','__nothing__');
+  if(error) { showToast('❌ Error al limpiar: '+error.message,'red'); return; }
+  allOrders = [];
+  renderAdmin();
+  showToast('🗑 Todos los pedidos eliminados','green');
+}
+
+// ══════════════════════════════════════════════
+//  TOAST
+// ══════════════════════════════════════════════
+let toastTimer;
+function showToast(msg, type='green') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast ${type} show`;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// ══════════════════════════════════════════════
+//  NAVEGACIÓN + CONTRASEÑA
+// ══════════════════════════════════════════════
+let adminOk = false;
+
+function go(page) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page-'+page).classList.add('active');
-  document.body.className=page==='admin'?'world-admin':'world-employee';
-  if(page==='admin')renderAdmin();
+  document.body.className = page==='admin' ? 'world-admin' : 'world-employee';
   window.scrollTo(0,0);
+
+  if(page === 'admin') {
+    loadOrders();
+    subscribeRealtime();
+  } else {
+    if(realtimeSub) { realtimeSub.unsubscribe(); realtimeSub = null; }
+  }
 }
-function reqAdmin(){
+
+function reqAdmin() {
   if(adminOk){go('admin');return;}
   document.getElementById('pwd-input').value='';
   document.getElementById('pwd-err').textContent='';
   document.getElementById('pwd-overlay').classList.add('open');
   setTimeout(()=>document.getElementById('pwd-input').focus(),100);
 }
-function checkPwd(){
-  const v=document.getElementById('pwd-input').value;
+function checkPwd() {
+  const v = document.getElementById('pwd-input').value;
   if(v===PASS){adminOk=true;closePwd();go('admin');}
   else{const el=document.getElementById('pwd-input');el.classList.add('err');document.getElementById('pwd-err').textContent='Contraseña incorrecta.';setTimeout(()=>el.classList.remove('err'),350);el.value='';el.focus();}
 }
